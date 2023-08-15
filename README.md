@@ -1,5 +1,14 @@
 # Rest API
 A RESTful API example written in go featuring secure user authentication.
+## Architecture Design
+```mermaid
+sequenceDiagram
+User->>API: HTTP Request
+API->>Redis: Authentication Request
+Redis->>API: Authentication Response
+API->>User: HTTP Response 
+```
+
 ## Endpoints
 All endpoints begin with the prefix `/api`. 
 
@@ -14,6 +23,7 @@ Returns an API key which can be used for authenticated endpoints.
 ```
 ### Authenticated Endpoints
 Authentication is expected to be an `API key` passed in by the `Authorization` http header.
+
 #### Get a product
 `GET /product/{id}`
 Get a product via it's product ID.
@@ -24,6 +34,7 @@ Get a product via it's product ID.
     "Name": "Book"
 }
 ```
+
 #### Create a product
 `POST /product`
 Create a product with a name and ID.
@@ -33,6 +44,7 @@ Create a product with a name and ID.
     "message": "Product created."
 }
 ```
+
 #### Delete a product
 `DELETE /product/{id}`
 Deletes a product via its ID.
