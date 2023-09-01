@@ -7,6 +7,8 @@ User->>API: HTTP Request
 API->>Redis: Authentication Request
 Redis->>API: Authentication Response
 API->>User: HTTP Response 
+API->>SQLite: CRUD Request
+SQLite->>API: CRUD Response
 ```
 
 ## Endpoints
@@ -24,33 +26,18 @@ Returns an API key which can be used for authenticated endpoints.
 ### Authenticated Endpoints
 Authentication is expected to be an `API key` passed in by the `Authorization` http header.
 
-#### Get a product
-`GET /product/{id}`
-Get a product via it's product ID.
+#### Get a pokemon
+`GET /pokemon/{name}`
+Get a pokemon via its pokemon name.
 ##### Response
 ```json
 {
-    "ID": 1,
-    "Name": "Book"
-}
-```
-
-#### Create a product
-`POST /product`
-Create a product with a name and ID.
-##### Response
-```json
-{
-    "message": "Product created."
-}
-```
-
-#### Delete a product
-`DELETE /product/{id}`
-Deletes a product via its ID.
-##### Response
-```json
-{
-    "message": "Product deleted."
-}
+    "Pokedex_Number": 1,
+    "Name": "Bulbasaur",
+    "Type1": "grass",
+    "Type2": "poison",
+    "Classification": "Seed Pokémon",
+    "Generation": 1,
+    "Legendary": false
+    }
 ```

@@ -17,7 +17,7 @@ type Pokemon struct {
 	Legendary      bool
 }
 
-func GetPokemonByName(name string) *Pokemon {
+func SelectPokemonByName(name string) *Pokemon {
 	db, err := sql.Open("sqlite3", "./Pokemon.db")
 	if err != nil {
 		log.Println("Failed to open database.")

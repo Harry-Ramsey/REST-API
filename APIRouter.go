@@ -2,10 +2,8 @@ package main
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 )
 
 type product struct {
@@ -27,9 +25,7 @@ func SetRoutes() {
 	/* -- Authenticated Endpoints -- */
 	authenticated := router.Group("/api")
 	authenticated.Use(APIAuthenticator())
-	authenticated.GET("/product/:id", getProduct)
-	authenticated.POST("/product", postProduct)
-	authenticated.DELETE("/product:id", deleteProduct)
+	authenticated.GET("/pokemon/:name", getPokemon)
 
 	router.Run()
 }
@@ -38,28 +34,12 @@ func getRegister(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"apikey": GenerateAPIKey()})
 }
 
-func getProduct(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse integer ID."})
+func getPokemon(c *gin.Context) {
+	name := c.Param("name")
+
+	pokemon := SelectPokemonByName(name)
+	if pokemon == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to select pokemon from database."})
 	}
-
-	c.JSON(http.StatusOK, products[id])
-}
-
-func postProduct(c *gin.Context) {
-	var json product
-	c.MustBindWith(&json, binding.JSON)
-	products[json.ID] = json
-	c.JSON(200, gin.H{"message": "Product created."})
-}
-
-func deleteProduct(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse integer ID."})
-	}
-
-	delete(products, id)
-	c.JSON(200, gin.H{"message": "Product deleted."})
+	c.JSON(http.StatusOK, pokemon)
 }
