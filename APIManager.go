@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
@@ -38,7 +39,7 @@ func GenerateAPIKey() string {
 	}
 
 	key := base64.StdEncoding.EncodeToString(buffer)
-	rdb.Set(ctx, key, 0, 0)
+	rdb.Set(ctx, key, 0, 24 * time.Hour)
 	return key
 }
 
