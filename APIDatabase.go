@@ -46,3 +46,26 @@ func SelectPokemonByName(name string) *Pokemon {
 
 	return &pokemon
 }
+
+func DeletePokemonByName(name string) error {
+	db, err := sql.Open("sqlite3", "./Pokemon.db")
+	if err != nil {
+		log.Println("Failed to open database.")
+		return err
+	}
+	defer db.Close()
+
+	stmt, err := db.Prepare("DELETE FROM Pokemon WHERE Name = ?")
+	if err != nil {
+		log.Println("Failed to prepare select statement error:", err)
+		return err
+	}
+
+	_, err = stmt.Exec(name)
+	if err != nil {
+		log.Println("Failed to delete pokemon from database.")
+		return err
+	}
+
+	return nil
+}

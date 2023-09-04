@@ -39,5 +39,15 @@ Get a pokemon via its pokemon name.
     "Classification": "Seed Pokémon",
     "Generation": 1,
     "Legendary": false
-    }
+}
+```
+
+#### Delete a pokemon
+`DELETE /pokemon/{name}`
+DELETE a pokemon via its pokemon name.
+##### Response
+```json
+{
+    "message": "Deleted pokemon from database."
+}
 ```
